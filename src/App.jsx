@@ -236,9 +236,48 @@ const UI = {
   },
 };
 
+const CONSENT = {
+  en: {
+    title: "Before you start",
+    intro: "This is a short pilot testing a new way to build practical AI skills through small, real tasks. Please read this and agree at the bottom. It takes a minute.",
+    points: [
+      ["It's advisory, not a test.", "There are no grades, no pass or fail, and nothing rides on it. Your results are yours and are never shared with anyone as a judgement of you."],
+      ["What we collect.", "Your name, and your answers, tasks and reflections in the app. We use them to give you coaching feedback and to see whether this way of learning works."],
+      ["An AI assistant is involved.", "Your answers are processed by an AI assistant (Claude, by Anthropic) to generate feedback. Anything shared more widely is anonymised, with no names."],
+      ["Do not share sensitive data.", "Practise on your own life, not work data. Never paste confidential or personal information, yours or anyone else's, into any AI tool."],
+      ["Your rights.", "Taking part is voluntary. You can stop and ask to delete your data at any time, no reason needed. Data is handled under GDPR/AVG and kept in the EU."],
+    ],
+    contact: "Run by [your name], The Ninth Tee. Questions: [your email].",
+    checks: [
+      "I have read and understood the above.",
+      "I am taking part voluntarily and can withdraw at any time.",
+      "I agree to my responses being used and processed, including with an AI assistant, for this pilot.",
+    ],
+    agree: "Agree and continue",
+  },
+  nl: {
+    title: "Voordat je begint",
+    intro: "Dit is een korte proef die een nieuwe manier test om praktische AI-vaardigheden op te bouwen met kleine, echte taken. Lees dit even en ga onderaan akkoord. Het kost een minuut.",
+    points: [
+      ["Het is advies, geen test.", "Er zijn geen cijfers, geen goed of fout, en er hangt niets van af. Je resultaten zijn van jou en worden nooit met iemand gedeeld als een oordeel over jou."],
+      ["Wat we verzamelen.", "Je naam, en je antwoorden, taken en reflecties in de app. We gebruiken die om je feedback te geven en om te zien of deze manier van leren werkt."],
+      ["Er is een AI-assistent bij betrokken.", "Je antwoorden worden verwerkt door een AI-assistent (Claude, van Anthropic) om feedback te maken. Wat breder wordt gedeeld is geanonimiseerd, zonder namen."],
+      ["Deel geen gevoelige gegevens.", "Oefen op je eigen leven, niet op werkgegevens. Plak nooit vertrouwelijke of persoonlijke informatie, van jou of van iemand anders, in een AI-tool."],
+      ["Je rechten.", "Meedoen is vrijwillig. Je kunt op elk moment stoppen en vragen om je gegevens te verwijderen, zonder reden. Gegevens worden verwerkt volgens de AVG en binnen de EU bewaard."],
+    ],
+    contact: "Uitgevoerd door [jouw naam], The Ninth Tee. Vragen: [jouw e-mail].",
+    checks: [
+      "Ik heb het bovenstaande gelezen en begrepen.",
+      "Ik doe vrijwillig mee en kan op elk moment stoppen.",
+      "Ik ga ermee akkoord dat mijn antwoorden worden gebruikt en verwerkt, ook met een AI-assistent, voor deze proef.",
+    ],
+    agree: "Akkoord en verder",
+  },
+};
+
 /* --------------------------- persistence -------------------------- */
 const KEY = "reps_state_v2";
-const emptyState = (lang = "en") => ({ lang, profile: null, scan: null, loops: {}, reps: 0, streak: 0, lastDay: null, badges: [] });
+const emptyState = (lang = "en") => ({ lang, consent: null, profile: null, scan: null, loops: {}, reps: 0, streak: 0, lastDay: null, badges: [] });
 async function loadState() {
   try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : emptyState(); }
   catch { return emptyState(); }
@@ -316,12 +355,12 @@ export default function App() {
 
   useEffect(() => { (async () => {
     const s = await loadState(); setS(s);
-    setView(!s.profile ? "onboard" : !s.scan ? "scan" : "home");
+    setView(!s.consent ? "consent" : !s.profile ? "onboard" : !s.scan ? "scan" : "home");
     setLoading(false);
   })(); }, []);
   const commit = (next) => { setS(next); saveState(next); };
   const setLang = (l) => commit({ ...S, lang: l });
-  const doReset = () => { const e = emptyState(lang); setS(e); saveState(e); setActiveLoop(null); setView("onboard"); };
+  const doReset = () => { const e = emptyState(lang); setS(e); saveState(e); setActiveLoop(null); setView("consent"); };
 
   if (loading) return (
     <div style={{ background: C.paper, minHeight: "100vh", fontFamily: SANS, color: C.sage }} className="flex items-center justify-center">{t.loading}</div>
@@ -329,6 +368,7 @@ export default function App() {
   return (
     <div style={{ background: C.paper, minHeight: "100vh", fontFamily: SANS, color: C.ink }}>
       <div className="mx-auto w-full" style={{ maxWidth: 460 }}>
+        {view === "consent" && <Consent lang={lang} setLang={setLang} onAgree={() => { commit({ ...S, consent: { agreed: true, at: Date.now(), version: 1 } }); setView("onboard"); }} />}
         {view === "onboard" && <Onboard t={t} lang={lang} setLang={setLang} onDone={(profile) => { commit({ ...S, profile }); setView("scan"); }} />}
         {view === "scan" && <Scan t={t} lang={lang} onDone={(scan) => { commit({ ...S, scan }); setView("insight"); }} />}
         {view === "insight" && <Insight t={t} lang={lang} S={S} onContinue={() => setView("home")} />}
@@ -340,6 +380,42 @@ export default function App() {
 }
 
 /* --------------------------- Onboarding --------------------------- */
+function Consent({ lang, setLang, onAgree }) {
+  const co = CONSENT[lang];
+  const [checks, setChecks] = useState([false, false, false]);
+  const allChecked = checks.every(Boolean);
+  return (
+    <div className="px-6 pt-10 pb-12">
+      <div className="flex items-center justify-between mb-6">
+        <div style={{ color: C.emerald, letterSpacing: 2 }} className="text-xs font-bold uppercase">Reps</div>
+        <LangToggle lang={lang} onChange={setLang} />
+      </div>
+      <h1 style={{ fontFamily: SERIF, color: C.ink, lineHeight: 1.1 }} className="text-3xl mb-3">{co.title}</h1>
+      <p style={{ color: C.inkSoft }} className="text-sm mb-5 leading-relaxed">{co.intro}</p>
+      <div className="space-y-3 mb-5">
+        {co.points.map((p, i) => (
+          <div key={i}>
+            <div style={{ color: C.ink }} className="text-sm font-semibold">{p[0]}</div>
+            <div style={{ color: C.inkSoft }} className="text-sm leading-relaxed">{p[1]}</div>
+          </div>
+        ))}
+      </div>
+      <p style={{ color: C.sage }} className="text-xs mb-6">{co.contact}</p>
+      <div className="space-y-2 mb-6">
+        {co.checks.map((c, i) => (
+          <button key={i} onClick={() => setChecks(checks.map((v, idx) => (idx === i ? !v : v)))}
+            className="w-full flex items-start gap-3 text-left px-4 py-3 active:scale-[.995]"
+            style={{ borderRadius: 12, background: checks[i] ? C.emeraldSoft : C.white, border: `1.5px solid ${checks[i] ? C.emerald : C.line}` }}>
+            <div style={{ width: 22, height: 22, borderRadius: 6, flexShrink: 0, background: checks[i] ? C.emerald : C.white, border: `1.5px solid ${checks[i] ? C.emerald : C.line}`, color: C.white }} className="flex items-center justify-center text-xs">{checks[i] ? "✓" : ""}</div>
+            <span style={{ color: C.ink }} className="text-sm leading-snug">{c}</span>
+          </button>
+        ))}
+      </div>
+      <Btn full disabled={!allChecked} onClick={onAgree}>{co.agree}</Btn>
+    </div>
+  );
+}
+
 function Onboard({ t, lang, setLang, onDone }) {
   const [name, setName] = useState("");
   const [ctx, setCtx] = useState("personal");
