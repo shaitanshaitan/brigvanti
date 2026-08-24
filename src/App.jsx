@@ -271,18 +271,18 @@ const CONSENT = {
   },
   nl: {
     title: "Voordat je begint",
-    intro: "Dit is een korte proef die een nieuwe manier test om praktische AI-vaardigheden op te bouwen met kleine, echte taken. Lees dit even en ga onderaan akkoord. Het kost een minuut.",
+    intro: "Dit is een korte proef die een nieuwe manier test om praktische AI-vaardigheden op te bouwen met kleine, echte taken. Lees dit even door en ga onderaan akkoord. Het kost een minuut.",
     points: [
-      ["Het is advies, geen test.", "Er zijn geen cijfers, geen goed of fout, en er hangt niets van af. Je resultaten zijn van jou en worden nooit met iemand gedeeld als een oordeel over jou."],
+      ["Het is advies, geen test.", "Er zijn geen cijfers, geen goed of fout, en er hangt niets van af. Je resultaten zijn van jou en worden nooit met iemand gedeeld."],
       ["Wat we verzamelen.", "Je naam, en je antwoorden, taken en reflecties in de app. We gebruiken die om je feedback te geven en om te zien of deze manier van leren werkt."],
-      ["Er is een AI-assistent bij betrokken.", "Je antwoorden worden verwerkt door een AI-assistent (Claude, van Anthropic) om feedback te maken. Wat breder wordt gedeeld is geanonimiseerd, zonder namen."],
-      ["Deel geen gevoelige gegevens.", "Oefen op je eigen leven, niet op werkgegevens. Plak nooit vertrouwelijke of persoonlijke informatie, van jou of van iemand anders, in een AI-tool."],
-      ["Je rechten.", "Meedoen is vrijwillig. Je kunt op elk moment stoppen en vragen om je gegevens te verwijderen, zonder reden. Gegevens worden verwerkt volgens de AVG en binnen de EU bewaard."],
+      ["Er is een AI-assistent bij betrokken.", "Je antwoorden worden verwerkt door een AI-assistent (Claude, van Anthropic) om feedback te geven. Wat is gedeeld wordt geanonimiseerd, zonder namen."],
+      ["Let op! Deel geen gevoelige gegevens.", "Oefen op je eigen data, niet op werkgegevens. Plak nooit vertrouwelijke of persoonlijke informatie, van jou of van iemand anders, in een AI-tool."],
+      ["Je rechten.", "Meedoen is vrijwillig. Je kunt op elk moment stoppen en vragen om je gegevens te verwijderen, zonder een reden te hoeven op te geven. De gegevens worden verwerkt volgens de AVG en binnen de EU bewaard."],
     ],
     contact: "Uitgevoerd door [jouw naam], The Ninth Tee. Vragen: [jouw e-mail].",
     checks: [
       "Ik heb het bovenstaande gelezen en begrepen.",
-      "Ik doe vrijwillig mee en kan op elk moment stoppen.",
+      "Ik doe vrijwillig mee en ben op de hoogte dat ikop elk moment kan stoppen.",
       "Ik ga ermee akkoord dat mijn antwoorden worden gebruikt en verwerkt, ook met een AI-assistent, voor deze proef.",
     ],
     agree: "Akkoord en verder",
@@ -302,7 +302,7 @@ async function clearState() { try { localStorage.removeItem(KEY); } catch {} }
 /* ----------------------------- coach ------------------------------ */
 async function getCoachFeedback(loop, artefact, reflection, lang) {
   const style = lang === "nl"
-    ? "Schrijf je hele antwoord in vlot, correct en natuurlijk Nederlands, zoals een Nederlandstalige coach dat zou doen. Let scherp op spelling, grammatica, werkwoordsvervoegingen en woordvolgorde. Gebruik de informele je-vorm. Houd de zinnen kort en helder, maar nooit ten koste van correcte grammatica. Gebruik geen gedachtestreepjes, alleen komma's en punten. Lees je antwoord na en corrigeer spel- en grammaticafouten voordat je het geeft."
+    ? "Schrijf je hele antwoord in vlot, correct en in natuurlijk Nederlands, zoals een Nederlandstalige coach dat zou doen. Let scherp op spelling, grammatica, werkwoordsvervoegingen en woordvolgorde. Gebruik de informele je-vorm. Houd de zinnen kort en helder, maar nooit ten koste van correcte grammatica. Gebruik geen gedachtestreepjes, alleen komma's en punten. Lees je antwoord na en corrigeer spel- en grammaticafouten voordat je het geeft."
     : "Write your reply in natural, correct English. Short, plain sentences, like a real person talking. Do not use dashes as punctuation; use commas and full stops.";
   const content =
 `You are the practice coach inside an AI-literacy app called Brigvanti, made by The Ninth Tee. You help adults get better at using AI in their real life.
