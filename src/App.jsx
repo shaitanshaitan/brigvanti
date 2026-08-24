@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 /* ------------------------------------------------------------------ *
- *  REPS. Phase-1 pilot app (working prototype), EN / NL.
+ *  BRIGVANTI. Phase-1 pilot app (working prototype), EN / NL.
  *  Advisory AI-literacy practice. Personal life first. Live Claude coach.
  *  Working name "Reps" is a placeholder. The Ninth Tee.
  * ------------------------------------------------------------------ */
@@ -291,7 +291,7 @@ async function getCoachFeedback(loop, artefact, reflection, lang) {
     ? "Schrijf je hele antwoord in vlot, correct en natuurlijk Nederlands, zoals een Nederlandstalige coach dat zou doen. Let scherp op spelling, grammatica, werkwoordsvervoegingen en woordvolgorde. Gebruik de informele je-vorm. Houd de zinnen kort en helder, maar nooit ten koste van correcte grammatica. Gebruik geen gedachtestreepjes, alleen komma's en punten. Lees je antwoord na en corrigeer spel- en grammaticafouten voordat je het geeft."
     : "Write your reply in natural, correct English. Short, plain sentences, like a real person talking. Do not use dashes as punctuation; use commas and full stops.";
   const content =
-`You are the practice coach inside an AI-literacy app called Reps, made by The Ninth Tee. You help adults get better at using AI in their real life.
+`You are the practice coach inside an AI-literacy app called Brigvanti, made by The Ninth Tee. You help adults get better at using AI in their real life.
 Character: warm, encouraging, concrete, honest. You're a coach, not an examiner, so always explain why. Never grade, score, or say pass/fail. Model responsible AI: never invent facts, and if a learner shared sensitive data, gently flag it and don't repeat it back. Keep the human in charge.
 
 A learner just completed a practice task. Give them coaching feedback.
@@ -387,7 +387,7 @@ function Consent({ lang, setLang, onAgree }) {
   return (
     <div className="px-6 pt-10 pb-12">
       <div className="flex items-center justify-between mb-6">
-        <div style={{ color: C.emerald, letterSpacing: 2 }} className="text-xs font-bold uppercase">Reps</div>
+        <div style={{ color: C.emerald, letterSpacing: 2 }} className="text-xs font-bold uppercase">Brigvanti</div>
         <LangToggle lang={lang} onChange={setLang} />
       </div>
       <h1 style={{ fontFamily: SERIF, color: C.ink, lineHeight: 1.1 }} className="text-3xl mb-3">{co.title}</h1>
@@ -422,7 +422,7 @@ function Onboard({ t, lang, setLang, onDone }) {
   return (
     <div className="px-6 pt-10 pb-10">
       <div className="flex items-center justify-between mb-8">
-        <div style={{ fontFamily: SANS, color: C.emerald, letterSpacing: 2 }} className="text-xs font-bold uppercase">Reps</div>
+        <div style={{ fontFamily: SANS, color: C.emerald, letterSpacing: 2 }} className="text-xs font-bold uppercase">Brigvanti</div>
         <LangToggle lang={lang} onChange={setLang} />
       </div>
       <h1 style={{ fontFamily: SERIF, color: C.ink, lineHeight: 1.1 }} className="text-4xl mb-4">{t.tagline}</h1>
