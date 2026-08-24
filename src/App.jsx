@@ -14,6 +14,20 @@ const C = {
 const SERIF = 'Georgia, "Iowan Old Style", "Times New Roman", serif';
 const SANS = 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 const LEVELS = { en: ["Aware", "Explorer", "Integrator", "Creator"], nl: ["Bewust", "Verkenner", "Integrator", "Maker"] };
+const LEVEL_DESC = {
+  en: [
+    "Getting started. You recognise AI and use it here and there.",
+    "Finding your way. You use AI for real tasks.",
+    "It's part of how you work, and you use it with judgement.",
+    "You shape how AI is used and help others do the same.",
+  ],
+  nl: [
+    "Net begonnen. Je herkent AI en gebruikt het af en toe.",
+    "Je vindt je weg. Je gebruikt AI voor echte taken.",
+    "Het hoort bij hoe je werkt, en je gebruikt AI bewust en verantwoordelijk.",
+    "Je bepaalt mee hoe AI wordt gebruikt en helpt anderen.",
+  ],
+};
 
 /* ----------------------------- content ---------------------------- */
 const DOMAINS = [
@@ -187,7 +201,7 @@ const UI = {
     scanFoot: "Your answer decides the picture, not the claim. No grades here.",
     yourInsight: "Your insight", insightHead: (n) => `Here's where you are, ${n}.`,
     insightBody: "This is a starting picture, not a label. A few strengths to build on, and plenty of room to grow. Your first few reps will sharpen it.",
-    gapNote: "A good spot to grow. The practice will help here.", startPractising: "Start practising",
+    gapNote: "A good spot to grow. The practice will help here.", startPractising: "Start practising", levelsTitle: "The four levels", levelsIntro: "A growth path. You climb as you practise.",
     welcome: "Welcome back", dayStreak: "day streak", repsDone: "reps done",
     todaysRep: "Today's rep", realTaskSub: (d) => `${d} · a real task, in your own life`, start: "Start →",
     allDone: "All reps done. Nice work.", allDoneSub: "Come back tomorrow, or revisit any rep below.",
@@ -218,7 +232,7 @@ const UI = {
     scanFoot: "Je antwoord bepaalt het beeld, niet wat je aanvinkte. Geen cijfers hier.",
     yourInsight: "Jouw inzicht", insightHead: (n) => `Zo sta je ervoor, ${n}.`,
     insightBody: "Dit is een startpunt, geen oordeel. Je ziet een paar sterke fundamenten en volop groeiruimte. De eerste oefeningen maken het meteen scherper.",
-    gapNote: "Een mooie plek om te groeien. Het oefenen helpt hier.", startPractising: "Begin met oefenen",
+    gapNote: "Een mooie plek om te groeien. Het oefenen helpt hier.", startPractising: "Begin met oefenen", levelsTitle: "De vier niveaus", levelsIntro: "Een groeipad. Je klimt terwijl je oefent.",
     welcome: "Welkom terug", dayStreak: "dagen op rij", repsDone: "Oefeningen gedaan",
     todaysRep: "Oefening van vandaag", realTaskSub: (d) => `${d} · een echte taak, uit je eigen leven`, start: "Start →",
     allDone: "Alle oefeningen klaar? Goed gedaan!", allDoneSub: "Kom morgen terug, of doe een oefening opnieuw.",
@@ -590,6 +604,21 @@ function Insight({ t, lang, S, onContinue }) {
             </div>
           );
         })}
+      </div>
+      <div className="mt-9" style={{ borderTop: `1.5px solid ${C.line}`, paddingTop: 20 }}>
+        <div style={{ color: C.ink, fontFamily: SERIF }} className="text-lg mb-1">{t.levelsTitle}</div>
+        <p style={{ color: C.sage }} className="text-xs mb-4">{t.levelsIntro}</p>
+        <div className="space-y-3">
+          {LEVELS[lang].map((name, i) => (
+            <div key={i} className="flex gap-3">
+              <div style={{ width: 22, height: 22, borderRadius: 999, flexShrink: 0, background: C.emeraldSoft, color: C.emeraldDk }} className="flex items-center justify-center text-xs font-bold">{i + 1}</div>
+              <div className="flex-1">
+                <div style={{ color: C.emeraldDk }} className="text-sm font-semibold">{name}</div>
+                <div style={{ color: C.sage }} className="text-xs leading-snug">{LEVEL_DESC[lang][i]}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="mt-9"><Btn full onClick={onContinue}>{t.startPractising}</Btn></div>
     </div>
