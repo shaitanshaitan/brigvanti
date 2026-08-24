@@ -99,7 +99,7 @@ const SCAN = {
     ] },
 };
 
-const PROOF_KIND = { D1: "task", D2: "task", D3: "sj", D6: "sj" };
+const PROOF_KIND = { D1: "sj", D2: "sj", D3: "sj", D6: "sj" };
 const TASKS = {
   D1: {
     prompt: { en: "Below is a short AI answer. One detail is made up. Say which detail it is, and how you'd check it.",
@@ -248,10 +248,12 @@ async function clearState() { try { localStorage.removeItem(KEY); } catch {} }
 
 /* ----------------------------- coach ------------------------------ */
 async function getCoachFeedback(loop, artefact, reflection, lang) {
-  const langLine = lang === "nl" ? "Write your entire reply in natural, human Dutch (Nederlands)." : "Write your reply in natural, human English.";
+  const style = lang === "nl"
+    ? "Schrijf je hele antwoord in vlot, correct en natuurlijk Nederlands, zoals een Nederlandstalige coach dat zou doen. Let scherp op spelling, grammatica, werkwoordsvervoegingen en woordvolgorde. Gebruik de informele je-vorm. Houd de zinnen kort en helder, maar nooit ten koste van correcte grammatica. Gebruik geen gedachtestreepjes, alleen komma's en punten. Lees je antwoord na en corrigeer spel- en grammaticafouten voordat je het geeft."
+    : "Write your reply in natural, correct English. Short, plain sentences, like a real person talking. Do not use dashes as punctuation; use commas and full stops.";
   const content =
 `You are the practice coach inside an AI-literacy app called Reps, made by The Ninth Tee. You help adults get better at using AI in their real life.
-Character: warm, encouraging, concrete, honest. You're a coach, not an examiner, so always explain why. Never grade, score, or say pass/fail. Model responsible AI: never invent facts, and if a learner shared sensitive data, gently flag it and don't repeat it back. Keep the human in charge. ${langLine} Write like a real person talking: short, plain sentences. Do not use dashes as punctuation; use commas and full stops.
+Character: warm, encouraging, concrete, honest. You're a coach, not an examiner, so always explain why. Never grade, score, or say pass/fail. Model responsible AI: never invent facts, and if a learner shared sensitive data, gently flag it and don't repeat it back. Keep the human in charge.
 
 A learner just completed a practice task. Give them coaching feedback.
 TASK: ${loop.title.en}. ${loop.doTask.en}
@@ -263,7 +265,9 @@ Reply directly to the learner in three short parts, no headings:
 1) one genuine, specific thing they did well,
 2) the single most useful thing to improve and why it matters in real life,
 3) one concrete next step they could try.
-Under 120 words, and never grade them.`;
+Under 120 words, and never grade them.
+
+${style}`;
   const res = await fetch("/.netlify/functions/anthropic", {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ max_tokens: 1000, messages: [{ role: "user", content }] }),
