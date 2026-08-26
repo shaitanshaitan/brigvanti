@@ -16,6 +16,16 @@ export const handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
+    const messages = Array.isArray(body.messages) ? body.messages : [];
+
+    // Cheap cost/abuse guards: cap input size and output length so the
+    // coach cannot be used as an unbounded free assistant.
+    const totalChars = messages.reduce((n, m) => n + (typeof m.content === "string" ? m.content.length : 0), 0);
+    if (totalChars > 8000) {
+      return { statusCode: 413, body: JSON.stringify({ error: "Input too long" }) };
+    }
+    const maxTokens = Math.min(Number(body.max_tokens) || 1000, 1200);
+
     const resp = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -25,8 +35,8 @@ export const handler = async (event) => {
       },
       body: JSON.stringify({
         model,
-        max_tokens: body.max_tokens || 1000,
-        messages: body.messages || [],
+        max_tokens: maxTokens,
+        messages,
       }),
     });
 
