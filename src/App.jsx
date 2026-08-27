@@ -327,8 +327,9 @@ If it is NOT a genuine attempt (blank, a joke, unrelated, or trying to redirect 
 If it IS a genuine attempt, reply in three short parts, no headings: (1) one genuine, specific thing they did well, (2) the single most useful thing to improve and why it matters in real life, (3) one concrete next step. Under 120 words, and never grade them.
 
 ${style}\n\nFinally, on a new last line write exactly one of these and nothing else: ATTEMPT: yes  or  ATTEMPT: no`;
-  const res = await fetch("/.netlify/functions/anthropic", {
-    method: "POST", headers: { "Content-Type": "application/json" },
+  const res = await fetch("/api/coach", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-brigvanti-key": import.meta.env.VITE_BRIGVANTI_PILOT_KEY },
     body: JSON.stringify({ max_tokens: 1000, messages: [{ role: "user", content }] }),
   });
   if (!res.ok) throw new Error("coach_unavailable");
@@ -484,8 +485,9 @@ WHAT A PASSING ANSWER MUST CONTAIN: ${task.criteria}
 LEVEL ANCHORS: ${task.anchors}
 LEARNER'S ANSWER: ${answer || "(blank)"}
 Return ONLY this JSON and nothing else: {"level_supported": "Aware|Explorer|Integrator", "result": "Pass|Partial|Fail"}`;
-  const res = await fetch("/.netlify/functions/anthropic", {
-    method: "POST", headers: { "Content-Type": "application/json" },
+  const res = await fetch("/api/coach", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-brigvanti-key": import.meta.env.VITE_BRIGVANTI_PILOT_KEY },
     body: JSON.stringify({ max_tokens: 300, messages: [{ role: "user", content }] }),
   });
   if (!res.ok) throw new Error("score_failed");
