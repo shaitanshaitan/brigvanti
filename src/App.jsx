@@ -45,8 +45,8 @@ const SCAN = {
       nl: ["Ik kan de AI benoemen in tools die ik al gebruik", "Ik kan uitleggen wat een AI-'hallucinatie' is", "Ik kan uitleggen waarom een chatbot en een voorspelmodel anders werken", "Ik kan het juiste soort AI kiezen om een probleem op te lossen"] },
     proofs: [
       { correct: 1, q: { en: "Which of these is most likely powered by AI?", nl: "Welke van deze toepassingen werkt het meest waarschijnlijk met AI?" },
-        opts: { en: ["A basic calculator", "Your phone suggesting 'people' and 'places' photo albums", "A paper map", "A light switch"],
-          nl: ["Een simpele rekenmachine", "Je telefoon die 'personen', 'plaatsen' en 'albums' aanbeveelt", "Een papieren kaart", "Een standaard lichtschakelaar"] } },
+        opts: { en: ["A Casio calculator", "Your phone suggesting 'people' and 'places' photo albums", "Rules-based chatbots", "A standard light switch"],
+          nl: ["Een Casio rekenmachine", "Je telefoon die 'personen', 'plaatsen' en 'albums' aanbeveelt", "Chatbot op basis van regels", "Een standaard lichtschakelaar"] } },
       { correct: 2, q: { en: "An AI gives you a confident, specific answer with a named source. You can't find that source anywhere. What do you do?", nl: "Een AI geeft je een zelfverzekerd, specifiek antwoord met een bron erbij. Echter kun je deze bron nergens terug vinden op het internet. Wat doe je?" },
         opts: { en: ["Trust it, the detail shows it did its research", "Use it, but note that it's unverified", "Treat it as unconfirmed and verify independently before relying on it", "Never trust AI answers at all"],
           nl: ["Vertrouw het, de details laten zien dat de informatie juist is", "Gebruik het, maar noteer dat het niet geverifieerd is", "Behandel het als onbevestigd en check het zelf voordat je de informatie vertrouwt", "AI-antwoorden nooit vertrouwen"] } },
@@ -261,7 +261,7 @@ const CONSENT = {
       ["Do not share sensitive data.", "Practise on your own life, not work data. Never paste confidential or personal information, yours or anyone else's, into any AI tool."],
       ["Your rights.", "Taking part is voluntary. You can stop and ask to delete your data at any time, no reason needed. Data is handled under GDPR/AVG and kept in the EU."],
     ],
-    contact: "Run by [your name], The Ninth Tee. Questions: [your email].",
+    contact: "Run by R. de Haas, The Ninth Tee. Questions: rpadehaas@gmail.com.",
     checks: [
       "I have read and understood the above.",
       "I am taking part voluntarily and can withdraw at any time.",
